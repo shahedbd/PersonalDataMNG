@@ -1,0 +1,12 @@
+﻿
+-- Kill Current Connection and Drop MSSQL DB: 
+USE [master]
+GO
+ALTER DATABASE [PersonalDataMNGDev] SET  SINGLE_USER WITH ROLLBACK IMMEDIATE
+GO
+USE [master]
+GO
+DROP DATABASE [PersonalDataMNGDev]
+GO
+
+
