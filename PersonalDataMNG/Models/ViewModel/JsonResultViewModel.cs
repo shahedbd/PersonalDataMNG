@@ -1,4 +1,6 @@
-﻿namespace PersonalDataMNG.Models.ViewModel
+using System;
+
+namespace PersonalDataMNG.Models.CommonViewModel
 {
     public class JsonResultViewModel
     {

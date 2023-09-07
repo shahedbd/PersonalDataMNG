@@ -1,0 +1,35 @@
+dotnet ef migrations add InitialCreate
+dotnet ef database update
+
+
+
+-- Kill Current Connection and Drop MSSQL DB: 
+USE [master]
+GO
+ALTER DATABASE [BusinessERP] SET  SINGLE_USER WITH ROLLBACK IMMEDIATE
+GO
+USE [master]
+GO
+DROP DATABASE [BusinessERP]
+GO
+
+
+npx kill-port 5001
+
+# Create local certificate:
+dotnet dev-certs https --clean
+dotnet dev-certs https -t
+
+
+
+dotnet build
+dotnet run
+
+Publish App:
+dotnet publish -c Release -p:UseAppHost=false
+dotnet publish -c Debug -r win-x86 --self-contained
+
+
+datatabe ref:
+https://www.aspsnippets.com/Articles/Simple-jQuery-DataTables-Tutorial-with-example-in-ASPNet.aspx
+https://github.com/garvincasimir/csharp-datatables-parser

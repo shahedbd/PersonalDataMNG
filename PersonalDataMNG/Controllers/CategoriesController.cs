@@ -3,28 +3,34 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PersonalDataMNG.Data;
 using PersonalDataMNG.Models;
-using PersonalDataMNG.Models.ViewModel;
+using PersonalDataMNG.Models.CommonViewModel;
 
 namespace PersonalDataMNG.Controllers
 {
     public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
+
         public CategoriesController(ApplicationDbContext context)
         {
             _context = context;
         }
-        public IActionResult Index()
+
+        public async Task<IActionResult> Index()
         {
+            var _Category = await _context.Category.ToListAsync();
+            if (_Category.Count < 1)
+                await CreateTestData();
             return View();
         }
 
         public IActionResult Data()
         {
-            var listCategory = _context.Category.Where(x => x.Cancelled == false).AsQueryable();
+            var listCategory = _context.Category.Where(x => x.Cancelled == false).OrderByDescending(x => x.Id).AsQueryable();
             var parser = new Parser<Category>(Request.Form, listCategory);
             return Json(parser.Parse());
         }
+
         [HttpGet]
         public async Task<IActionResult> Details(long? id)
         {
@@ -40,6 +46,7 @@ namespace PersonalDataMNG.Controllers
             if (id > 0) vm = await _context.Category.Where(x => x.Id == id).FirstOrDefaultAsync();
             return PartialView("_AddEdit", vm);
         }
+
         [HttpPost]
         public async Task<IActionResult> AddEdit(Category vm)
         {
@@ -91,6 +98,7 @@ namespace PersonalDataMNG.Controllers
                 throw;
             }
         }
+
         [HttpDelete]
         public async Task<JsonResult> Delete(Int64 id)
         {
@@ -109,6 +117,43 @@ namespace PersonalDataMNG.Controllers
             {
                 throw;
             }
+        }
+
+
+
+
+        private async Task CreateTestData()
+        {
+            foreach (var item in GetCategoryList())
+            {
+                item.CreatedDate = DateTime.Now;
+                item.ModifiedDate = DateTime.Now;
+                item.CreatedBy = "Admin";
+                item.ModifiedBy = "Admin";
+                _context.Category.Add(item);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        private IEnumerable<Category> GetCategoryList()
+        {
+            return new List<Category>
+            {
+                new Category { Name = "Item Category 01", Description = "Description of your category item: lorem ipsum" },
+                new Category { Name = "Item Category 02", Description = "Description of your category item: lorem ipsum" },
+                new Category { Name = "Item Category 03", Description = "Description of your category item: lorem ipsum" },
+                new Category { Name = "Item Category 04", Description = "Description of your category item: lorem ipsum" },
+                new Category { Name = "Item Category 05", Description = "Description of your category item: lorem ipsum" },
+
+                new Category { Name = "Item Category 06", Description = "Description of your category item: lorem ipsum" },
+                new Category { Name = "Item Category 07", Description = "Description of your category item: lorem ipsum" },
+                new Category { Name = "Item Category 08", Description = "Description of your category item: lorem ipsum" },
+                new Category { Name = "Item Category 09", Description = "Description of your category item: lorem ipsum" },
+                new Category { Name = "Item Category 10", Description = "Description of your category item: lorem ipsum" },
+
+                new Category { Name = "Item Category 11", Description = "Description of your category item: lorem ipsum" },
+                new Category { Name = "Item Category 12", Description = "Description of your category item: lorem ipsum" },
+            };
         }
     }
 }

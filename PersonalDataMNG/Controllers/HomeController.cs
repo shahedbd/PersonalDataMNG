@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PersonalDataMNG.Models;
 using System.Diagnostics;
+using PersonalDataMNG.Models;
 
 namespace PersonalDataMNG.Controllers
 {
@@ -15,6 +15,7 @@ namespace PersonalDataMNG.Controllers
 
         public IActionResult Index()
         {
+            
             return View();
         }
 

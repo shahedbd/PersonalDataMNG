@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["title"] = "Categories";
+}
+
+<div class="row">
+    <div class="col-md-5">
+        <button class="btn btn-sm btn-danger" onclick="AddEdit(0)">Add New</button>
+    </div>
+    <div class="col-md-7 pull-right">
+        <h5 class="pull-right"><b>&nbsp;Categories List</b></h5>
+    </div>
+</div>
+
+<hr />
+<table id="tblCategories" class="BlueGreen"></table>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/Categories/Categories_CRUD.js"></script>
+<script src="~/js/Categories/Categories_Datatable.js"></script>
